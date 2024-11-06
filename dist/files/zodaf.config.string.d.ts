@@ -1,1 +1,0 @@
-export declare const zodafConfigTs = "import { ZodafConfig } from \"@zodaf/react\";\nimport { InputField } from \"./src/components/ui/zodaf/InputField\";\n\nexport const config: ZodafConfig = {\n\tmapping: {\n\t\tinput: InputField,\n\t},\n   // Add your configuration here\n}; ";
