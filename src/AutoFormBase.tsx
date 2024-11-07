@@ -16,6 +16,7 @@ function isZodObject(schema: ZodSchema): schema is ZodObject<any> {
 
 // Fonction pour transformer les champs en booleans ou nombres automatiquement
 const transformData = (data: Record<string, any>, schema: any) => {
+	console.log(data);
 	const transformedData: Record<string, any> = {};
 
 	Object.keys(data).forEach((key) => {
