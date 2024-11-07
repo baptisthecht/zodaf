@@ -1,6 +1,6 @@
-import { ZodafELementProps } from "..";
+import { ZodafInputElementProps } from "..";
 
-const InputField: React.FC<ZodafELementProps> = ({
+const InputField: React.FC<ZodafInputElementProps> = ({
 	name,
 	label,
 	register,
