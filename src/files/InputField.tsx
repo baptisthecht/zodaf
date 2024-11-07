@@ -5,8 +5,8 @@ const InputField: React.FC<ZodafInputElementProps> = ({
 	label,
 	register,
 	error,
-	disabled,
-	description,
+	// disabled,
+	// description,
 }) => {
 	return (
 		<div className="mb-4">
@@ -14,16 +14,16 @@ const InputField: React.FC<ZodafInputElementProps> = ({
 				{label}
 			</label>
 			<input
-				disabled={disabled}
+				// disabled={disabled}
 				id={name}
 				{...register(name)}
 				className={`border px-3 py-2 w-full ${
 					error ? "border-red-500" : "border-gray-300"
 				} rounded`}
 			/>
-			{description && (
+			{/* {description && (
 				<p className="text-gray-500 text-sm mt-1">{description}</p>
-			)}
+			)} */}
 			{error && <p className="text-red-500 text-sm mt-1">{error}</p>}
 		</div>
 	);

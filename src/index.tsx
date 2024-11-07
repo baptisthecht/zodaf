@@ -15,16 +15,20 @@ import { z, ZodSchema } from "zod";
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
 // Common types for input and select elements
+
+type GivenFormConfig = {
+	showOptional?: boolean;
+	showRequired?: boolean;
+};
+
 type ZodafElementBaseProps = {
 	label?: string;
 	name: string;
 	register: UseFormRegister<any>;
 	error?: any;
-	description?: string;
-	disabled?: boolean;
-	placeholder?: string;
-	icon?: LucideIcon;
 	required?: boolean;
+	formConfig?: GivenFormConfig;
+	fieldConfig?: ZodafFieldConfig;
 };
 
 export type ZodafInputElementProps = ZodafElementBaseProps;

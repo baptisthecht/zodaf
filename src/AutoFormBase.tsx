@@ -52,6 +52,9 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 			onChange,
 			submitHidden = false,
 			submitLabel = "Submit",
+			showOptional,
+			showRequired,
+			submitType,
 		} = config;
 		const {
 			register,
@@ -177,15 +180,16 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 									schema.shape[key].description ||
 									key
 								}
-								description={fieldsConfig[key]?.description}
 								options={options}
-								disabled={fieldsConfig[key]?.disabled}
-								placeholder={fieldsConfig[key]?.placeholder}
-								icon={fieldsConfig[key]?.icon}
 								error={message} // Passer le message d'erreur comme chaîne de caractères
 								register={register}
 								name={key}
 								required={!optionnal}
+								formConfig={{
+									showOptional,
+									showRequired,
+								}}
+								fieldConfig={fieldsConfig[key]}
 								{...fieldsConfig[key]?.props}
 							/>
 						);
