@@ -122,6 +122,7 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 									key
 								}
 								description={fieldsConfig[key]?.description}
+								options={options}
 								disabled={fieldsConfig[key]?.disabled}
 								placeholder={fieldsConfig[key]?.placeholder}
 								icon={fieldsConfig[key]?.icon}
