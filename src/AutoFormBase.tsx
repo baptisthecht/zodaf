@@ -72,14 +72,13 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 		const onSubmitForm = (data: z.infer<typeof schema>) => {
 			// Transformer les données avant de les passer au schema
 			const transformedData = transformData(data, schema);
-
+			console.log(data);
 			const result = schema.safeParse(transformedData); // Valider avec le schéma
 			if (result.success) {
 				if (onSubmit) {
 					onSubmit(result.data);
 				}
 			} else {
-				console.log(result.data);
 				return;
 			}
 		};
