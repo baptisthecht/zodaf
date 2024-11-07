@@ -93,6 +93,7 @@ export const DEFAULT_MAPPING: Record<string, string> = {
 	ZodNumber: "number",
 	ZodBoolean: "checkbox",
 	ZodDate: "date",
+	ZodEnum: "select",
 };
 
 // Exports
