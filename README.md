@@ -8,4 +8,4 @@ A **simple** and **flexible** React auto-form library for **easy** dynamic form 
 
 ## Documentation
 
-This documentation is written in english only and only available [here](https://zodaf-docs.vercel.app/), for more information, don't hesitate to contact me at hello@baptisthecht.fr.
+This documentation is written in english only and only available [here](https://zodaf.mintlify.app/), for more information, don't hesitate to contact me at hello@baptisthecht.fr.
