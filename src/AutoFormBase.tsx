@@ -15,21 +15,6 @@ function isZodObject(schema: ZodSchema): schema is ZodObject<any> {
 	return schema instanceof z.ZodObject;
 }
 
-function cloneAndTransformSchema(schema: any) {
-	return schema.deepPartial().transform((value: any) => {
-		// On parcourt l'objet et on transforme les valeurs de type number
-		const transformedValue: any = {};
-		for (const key in value) {
-			if (typeof value[key] === "string" && !isNaN(Number(value[key]))) {
-				transformedValue[key] = Number(value[key]); // Si c'est un string convertible en number
-			} else {
-				transformedValue[key] = value[key]; // On garde la valeur originale
-			}
-		}
-		return transformedValue;
-	});
-}
-
 // Fonction pour transformer les champs en booleans ou nombres automatiquement
 const transformData = (data: Record<string, any>, schema: any) => {
 	console.log(data);
@@ -58,10 +43,30 @@ const transformData = (data: Record<string, any>, schema: any) => {
 	return transformedData;
 };
 
+function cloneSchemaWithTransform(schema: z.ZodObject<any>) {
+	const shape = schema.shape;
+	const transformedShape: Record<string, any> = {};
+
+	for (const key in shape) {
+		const field = shape[key];
+		if (field instanceof z.ZodNumber) {
+			transformedShape[key] = field.transform((val) =>
+				typeof val === "string" && !isNaN(Number(val))
+					? Number(val)
+					: val
+			);
+		} else {
+			transformedShape[key] = field;
+		}
+	}
+
+	return z.object(transformedShape);
+}
+
 const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 	({ form, zodafConfig, className, ...props }, ref) => {
-		const { schema: unParsedSchema, config } = form;
-		const schema = cloneAndTransformSchema(unParsedSchema);
+		const { schema: unTransformedSchema, config } = form;
+		const schema = cloneSchemaWithTransform(unTransformedSchema);
 		const {
 			fieldsConfig = {},
 			onSubmit,
