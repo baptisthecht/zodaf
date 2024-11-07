@@ -105,11 +105,22 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 						if (fieldsConfig[key] && fieldsConfig[key].fieldType) {
 							fieldType = fieldsConfig[key].fieldType;
 						} else {
-							fieldType =
-								DEFAULT_MAPPING[
-									schema.shape[key]._def
-										.typeName as z.ZodFirstPartyTypeKind
-								];
+							if (
+								schema.shape[key]._def.typeName ===
+								"ZodOptional"
+							) {
+								fieldType =
+									DEFAULT_MAPPING[
+										schema.shape[key]._def.innerType._def
+											.typeName as z.ZodFirstPartyTypeKind
+									];
+							} else {
+								fieldType =
+									DEFAULT_MAPPING[
+										schema.shape[key]._def
+											.typeName as z.ZodFirstPartyTypeKind
+									];
+							}
 						}
 
 						// Extraire le message d'erreur
