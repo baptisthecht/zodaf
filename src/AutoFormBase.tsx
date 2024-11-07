@@ -98,37 +98,38 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 									"No component found for select fieldType: select. Please check your zodaf.config.ts file."
 								);
 							}
-						}
-						const Comp = zodafConfig.inputMapping?.[fieldType];
+						} else {
+							const Comp = zodafConfig.inputMapping?.[fieldType];
 
-						if (!Comp) {
-							throw new Error(
-								`No component found for input fieldType: ${fieldType}. Please check your zodaf.config.ts file. ${schema.shape[key]._def.typeName}`
+							if (!Comp) {
+								throw new Error(
+									`No component found for input fieldType: ${fieldType}. Please check your zodaf.config.ts file. ${schema.shape[key]._def.typeName}`
+								);
+							}
+
+							return (
+								<Comp
+									key={key}
+									label={
+										fieldsConfig[key]?.label ||
+										schema.shape[key].description ||
+										key
+									}
+									description={fieldsConfig[key]?.description}
+									disabled={fieldsConfig[key]?.disabled}
+									placeholder={fieldsConfig[key]?.placeholder}
+									icon={fieldsConfig[key]?.icon}
+									error={
+										typeof message === "object"
+											? message?.message?.toString()
+											: message
+									}
+									register={register}
+									name={key}
+									{...fieldsConfig[key]?.props}
+								/>
 							);
 						}
-
-						return (
-							<Comp
-								key={key}
-								label={
-									fieldsConfig[key]?.label ||
-									schema.shape[key].description ||
-									key
-								}
-								description={fieldsConfig[key]?.description}
-								disabled={fieldsConfig[key]?.disabled}
-								placeholder={fieldsConfig[key]?.placeholder}
-								icon={fieldsConfig[key]?.icon}
-								error={
-									typeof message === "object"
-										? message?.message?.toString()
-										: message
-								}
-								register={register}
-								name={key}
-								{...fieldsConfig[key]?.props}
-							/>
-						);
 					})}
 				{Submit && !submitHidden && <Submit>{submitLabel}</Submit>}
 			</form>
