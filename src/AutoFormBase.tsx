@@ -103,7 +103,7 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 
 						if (!Comp) {
 							throw new Error(
-								`No component found for input fieldType: ${fieldType}. Please check your zodaf.config.ts file.`
+								`No component found for input fieldType: ${fieldType}. Please check your zodaf.config.ts file. ${schema.shape[key]._def.typeName}`
 							);
 						}
 
