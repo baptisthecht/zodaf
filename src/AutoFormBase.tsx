@@ -1,7 +1,14 @@
 import { forwardRef } from "react";
 import { useForm } from "react-hook-form";
 import { z, ZodObject, ZodSchema } from "zod";
-import { AutoFormBaseProps, cn, DEFAULT_MAPPING, ZodafSelectOption } from ".";
+import {
+	AutoFormBaseProps,
+	cn,
+	DEFAULT_MAPPING,
+	ZodafInputElement,
+	ZodafSelectElement,
+	ZodafSelectOption,
+} from ".";
 
 function isZodObject(schema: ZodSchema<any>): schema is ZodObject<any> {
 	return schema instanceof z.ZodObject;
@@ -72,6 +79,7 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 
 						const message = errors[key]?.message;
 						let options: ZodafSelectOption[] = [];
+						let Comp: ZodafInputElement | ZodafSelectElement;
 						if (
 							(schema.shape[key]._def
 								.typeName as z.ZodFirstPartyTypeKind) ===
@@ -91,45 +99,42 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 									};
 								}
 							);
-							const Select =
-								zodafConfig.selectMapping?.[fieldType];
-							if (!Select) {
+							if (!zodafConfig.selectMapping?.[fieldType]) {
 								throw new Error(
 									"No component found for select fieldType: select. Please check your zodaf.config.ts file."
 								);
 							}
+							Comp = zodafConfig.selectMapping?.[fieldType];
 						} else {
-							const Comp = zodafConfig.inputMapping?.[fieldType];
-
-							if (!Comp) {
+							if (!zodafConfig.inputMapping?.[fieldType]) {
 								throw new Error(
-									`No component found for input fieldType: ${fieldType}. Please check your zodaf.config.ts file. ${schema.shape[key]._def.typeName}`
+									`No component found for input fieldType: ${fieldType}. Please check your zodaf.config.ts file.`
 								);
 							}
-
-							return (
-								<Comp
-									key={key}
-									label={
-										fieldsConfig[key]?.label ||
-										schema.shape[key].description ||
-										key
-									}
-									description={fieldsConfig[key]?.description}
-									disabled={fieldsConfig[key]?.disabled}
-									placeholder={fieldsConfig[key]?.placeholder}
-									icon={fieldsConfig[key]?.icon}
-									error={
-										typeof message === "object"
-											? message?.message?.toString()
-											: message
-									}
-									register={register}
-									name={key}
-									{...fieldsConfig[key]?.props}
-								/>
-							);
+							Comp = zodafConfig.inputMapping?.[fieldType];
 						}
+						return (
+							<Comp
+								key={key}
+								label={
+									fieldsConfig[key]?.label ||
+									schema.shape[key].description ||
+									key
+								}
+								description={fieldsConfig[key]?.description}
+								disabled={fieldsConfig[key]?.disabled}
+								placeholder={fieldsConfig[key]?.placeholder}
+								icon={fieldsConfig[key]?.icon}
+								error={
+									typeof message === "object"
+										? message?.message?.toString()
+										: message
+								}
+								register={register}
+								name={key}
+								{...fieldsConfig[key]?.props}
+							/>
+						);
 					})}
 				{Submit && !submitHidden && <Submit>{submitLabel}</Submit>}
 			</form>
