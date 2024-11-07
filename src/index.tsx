@@ -23,13 +23,34 @@ export type ZodafELementProps = {
 };
 export type ZodafElement = FC<ZodafELementProps>;
 
-export type SubmitType = ForwardRefExoticComponent<
+export type ZodafSubmitElement = ForwardRefExoticComponent<
 	ButtonHTMLAttributes<HTMLButtonElement> & RefAttributes<HTMLButtonElement>
 >;
+
+export type ZodafSelectOption = {
+	value: string;
+	label: string;
+};
+
+export type ZodafSelectELementProps = {
+	label?: string;
+	name: string;
+	register: UseFormRegister<any>;
+	error?: string;
+	description?: string;
+	disabled?: boolean;
+	placeholder?: string;
+	icon?: LucideIcon;
+	options?: ZodafSelectOption[];
+};
+
+export type ZodafSelectElement = FC<ZodafSelectELementProps>;
+
 // Config
 export type ZodafConfig = {
 	mapping?: Record<string, ZodafElement>;
-	submit?: SubmitType;
+	submit?: ZodafSubmitElement;
+	select?: ZodafSelectElement;
 };
 
 // AutoForm utils
