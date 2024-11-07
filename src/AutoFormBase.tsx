@@ -86,6 +86,7 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 								description={fieldsConfig[key]?.description}
 								disabled={fieldsConfig[key]?.disabled}
 								placeholder={fieldsConfig[key]?.placeholder}
+								icon={fieldsConfig[key]?.icon}
 								error={
 									typeof message === "object"
 										? message?.message?.toString()
