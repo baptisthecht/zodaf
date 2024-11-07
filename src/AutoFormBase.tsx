@@ -43,30 +43,38 @@ const transformData = (data: Record<string, any>, schema: any) => {
 	return transformedData;
 };
 
-function cloneSchemaWithTransform(schema: z.ZodObject<any>) {
+function cloneSchemaWithNumberTransform(
+	schema: z.ZodObject<any>
+): z.ZodObject<any> {
 	const shape = schema.shape;
 	const transformedShape: Record<string, any> = {};
 
+	// Parcours de chaque champ du schéma pour appliquer la transformation
 	for (const key in shape) {
 		const field = shape[key];
+
 		if (field instanceof z.ZodNumber) {
-			transformedShape[key] = field.transform((val) =>
-				typeof val === "string" && !isNaN(Number(val))
+			// Applique un transform à tous les champs z.number()
+			transformedShape[key] = field.transform((val) => {
+				// Si la valeur est une chaîne qui peut être convertie en number, la convertir
+				return typeof val === "string" && !isNaN(Number(val))
 					? Number(val)
-					: val
-			);
+					: val;
+			});
 		} else {
+			// Si ce n'est pas un z.number(), on garde le champ original
 			transformedShape[key] = field;
 		}
 	}
 
+	// Retourne un nouveau schéma avec les transformations appliquées
 	return z.object(transformedShape);
 }
 
 const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 	({ form, zodafConfig, className, ...props }, ref) => {
 		const { schema: unTransformedSchema, config } = form;
-		const schema = cloneSchemaWithTransform(unTransformedSchema);
+		const schema = cloneSchemaWithNumberTransform(unTransformedSchema);
 		const {
 			fieldsConfig = {},
 			onSubmit,
