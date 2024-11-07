@@ -1,3 +1,4 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { forwardRef } from "react";
 import { useForm } from "react-hook-form";
 import { z, ZodObject, ZodSchema } from "zod";
@@ -58,6 +59,7 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 			formState: { errors },
 		} = useForm({
 			mode: "onBlur",
+			resolver: zodResolver(schema),
 			defaultValues: isZodObject(schema)
 				? Object.keys(schema.shape).reduce((acc, key) => {
 						acc[key] = "";
