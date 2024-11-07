@@ -15,6 +15,21 @@ function isZodObject(schema: ZodSchema): schema is ZodObject<any> {
 	return schema instanceof z.ZodObject;
 }
 
+function cloneAndTransformSchema(schema: any) {
+	return schema.deepPartial().transform((value: any) => {
+		// On parcourt l'objet et on transforme les valeurs de type number
+		const transformedValue: any = {};
+		for (const key in value) {
+			if (typeof value[key] === "string" && !isNaN(Number(value[key]))) {
+				transformedValue[key] = Number(value[key]); // Si c'est un string convertible en number
+			} else {
+				transformedValue[key] = value[key]; // On garde la valeur originale
+			}
+		}
+		return transformedValue;
+	});
+}
+
 // Fonction pour transformer les champs en booleans ou nombres automatiquement
 const transformData = (data: Record<string, any>, schema: any) => {
 	console.log(data);
@@ -45,7 +60,8 @@ const transformData = (data: Record<string, any>, schema: any) => {
 
 const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 	({ form, zodafConfig, className, ...props }, ref) => {
-		const { schema, config } = form;
+		const { schema: unParsedSchema, config } = form;
+		const schema = cloneAndTransformSchema(unParsedSchema);
 		const {
 			fieldsConfig = {},
 			onSubmit,
