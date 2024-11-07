@@ -10,8 +10,7 @@ import { UseFormRegister } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 import { z, ZodSchema } from "zod";
 
-// Component
-export type ZodafELementProps = {
+export type ZodafInputElementProps = {
 	label?: string;
 	name: string;
 	register: UseFormRegister<any>;
@@ -21,7 +20,7 @@ export type ZodafELementProps = {
 	placeholder?: string;
 	icon?: LucideIcon;
 };
-export type ZodafElement = FC<ZodafELementProps>;
+export type ZodafInputElement = FC<ZodafInputElementProps>;
 
 export type ZodafSubmitElement = ForwardRefExoticComponent<
 	ButtonHTMLAttributes<HTMLButtonElement> & RefAttributes<HTMLButtonElement>
@@ -43,25 +42,12 @@ export type ZodafSelectELementProps = {
 	icon?: LucideIcon;
 	options?: ZodafSelectOption[];
 };
-
 export type ZodafSelectElement = FC<ZodafSelectELementProps>;
 
-// Config
 export type ZodafConfig = {
-	mapping?: Record<string, ZodafElement>;
-	submit?: ZodafSubmitElement;
-	select?: ZodafSelectElement;
-};
-
-// AutoForm utils
-export type ZodafFieldConfig = {
-	fieldType?: string;
-	label?: string;
-	description?: string;
-	disabled?: boolean;
-	placeholder?: string;
-	props?: Record<string, any>;
-	icon?: LucideIcon;
+	inputMapping?: Record<string, ZodafInputElement>;
+	submitMapping?: Record<string, ZodafSubmitElement>;
+	selectMapping?: Record<string, ZodafSelectElement>;
 };
 
 // AutoFormBase (package)
@@ -86,8 +72,20 @@ type AutoFormConfig<T> = T extends z.ZodObject<infer Shape>
 			onChange?: (data: z.infer<T>) => any;
 			submitHidden?: boolean;
 			submitLabel?: string;
+			submitType?: string;
 	  }
 	: never;
+
+export type ZodafFieldConfig = {
+	fieldType?: string;
+	label?: string;
+	description?: string;
+	disabled?: boolean;
+	placeholder?: string;
+	props?: Record<string, any>;
+	icon?: LucideIcon;
+	optionsLabels?: Record<string, string>;
+};
 
 export function useAutoForm<T extends z.ZodSchema>(
 	schema: T,

@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import { useForm } from "react-hook-form";
 import { z, ZodObject, ZodSchema } from "zod";
-import { AutoFormBaseProps, cn, DEFAULT_MAPPING } from ".";
+import { AutoFormBaseProps, cn, DEFAULT_MAPPING, ZodafSelectOption } from ".";
 
 function isZodObject(schema: ZodSchema<any>): schema is ZodObject<any> {
 	return schema instanceof z.ZodObject;
@@ -41,10 +41,13 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 			}
 		};
 
-		const Submit = zodafConfig.submit;
+		const Submit =
+			zodafConfig.submitMapping?.[config.submitType || "submit"];
 		if (!Submit && !submitHidden) {
 			throw new Error(
-				"No component found for fieldType: submit. Please check your zodaf.config.ts file or hide submit button by adding submitHidden into form config."
+				`No component found for submit type: ${
+					config.submitType || "submit"
+				}. Please check your zodaf.config.ts file or hide submit button by adding submitHidden into form config.`
 			);
 		}
 
@@ -66,14 +69,42 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 										.typeName as z.ZodFirstPartyTypeKind
 								];
 						}
-						const Comp = zodafConfig.mapping?.[fieldType];
+						const Comp = zodafConfig.inputMapping?.[fieldType];
 
 						if (!Comp) {
 							throw new Error(
-								`No component found for fieldType: ${fieldType}. Please check your zodaf.config.ts file.`
+								`No component found for input fieldType: ${fieldType}. Please check your zodaf.config.ts file.`
 							);
 						}
 						const message = errors[key]?.message;
+						let options: ZodafSelectOption[] = [];
+						if (
+							(schema.shape[key]._def
+								.typeName as z.ZodFirstPartyTypeKind) ===
+								"ZodEnum" ||
+							(schema.shape[key]._def
+								.typeName as z.ZodFirstPartyTypeKind) ===
+								"ZodNativeEnum"
+						) {
+							options = schema.shape[key]._def.values.map(
+								(value: string) => {
+									const fieldsConfigValue =
+										fieldsConfig[key]?.optionsLabels;
+									return {
+										value,
+										label:
+											fieldsConfigValue?.[value] || value,
+									};
+								}
+							);
+							const Select =
+								zodafConfig.selectMapping?.[fieldType];
+							if (!Select) {
+								throw new Error(
+									"No component found for select fieldType: select. Please check your zodaf.config.ts file."
+								);
+							}
+						}
 
 						return (
 							<Comp
