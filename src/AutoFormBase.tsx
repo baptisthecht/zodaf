@@ -73,10 +73,10 @@ function cloneSchemaWithNumberTransform(
 
 const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 	({ form, zodafConfig, className, ...props }, ref) => {
-		const { schema: unTransformedSchema, config } = form;
-		const schema = cloneSchemaWithNumberTransform(unTransformedSchema);
-		console.log(unTransformedSchema.shape);
+		const { schema, config } = form;
+		const transformedSchema = cloneSchemaWithNumberTransform(schema);
 		console.log(schema.shape);
+		console.log(transformedSchema.shape);
 		const {
 			fieldsConfig = {},
 			onSubmit,
@@ -90,7 +90,7 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 			formState: { errors },
 		} = useForm({
 			mode: "onBlur",
-			resolver: zodResolver(schema),
+			resolver: zodResolver(transformedSchema),
 			defaultValues: isZodObject(schema)
 				? Object.keys(schema.shape).reduce((acc, key) => {
 						acc[key] = "";
