@@ -69,13 +69,7 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 										.typeName as z.ZodFirstPartyTypeKind
 								];
 						}
-						const Comp = zodafConfig.inputMapping?.[fieldType];
 
-						if (!Comp) {
-							throw new Error(
-								`No component found for input fieldType: ${fieldType}. Please check your zodaf.config.ts file.`
-							);
-						}
 						const message = errors[key]?.message;
 						let options: ZodafSelectOption[] = [];
 						if (
@@ -104,6 +98,13 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 									"No component found for select fieldType: select. Please check your zodaf.config.ts file."
 								);
 							}
+						}
+						const Comp = zodafConfig.inputMapping?.[fieldType];
+
+						if (!Comp) {
+							throw new Error(
+								`No component found for input fieldType: ${fieldType}. Please check your zodaf.config.ts file.`
+							);
 						}
 
 						return (
