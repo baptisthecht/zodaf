@@ -1,4 +1,5 @@
 import clsx, { ClassValue } from "clsx";
+import { LucideIcon } from "lucide-react";
 import {
 	ButtonHTMLAttributes,
 	FC,
@@ -38,6 +39,7 @@ export type ZodafFieldConfig = {
 	disabled?: boolean;
 	placeholder?: string;
 	props?: Record<string, any>;
+	icon?: LucideIcon;
 };
 
 // AutoFormBase (package)
