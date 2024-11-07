@@ -181,7 +181,7 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 						} else {
 							if (!zodafConfig.inputMapping?.[fieldType]) {
 								throw new Error(
-									`No component found for input fieldType: ${fieldType}. Please check your zodaf.config.ts file.`
+									`No component found for input fieldType: ${fieldType}. Please check your zodaf.config.ts file. ${fieldType}`
 								);
 							}
 							Comp = zodafConfig.inputMapping?.[fieldType];
