@@ -19,7 +19,7 @@ type ZodafElementBaseProps = {
 	label?: string;
 	name: string;
 	register: UseFormRegister<any>;
-	error?: string;
+	error?: any;
 	description?: string;
 	disabled?: boolean;
 	placeholder?: string;

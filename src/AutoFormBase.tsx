@@ -34,12 +34,6 @@ const transformData = (data: Record<string, any>, schema: any) => {
 					transformedData[key] = value; // Laisser la valeur inchangée si ce n'est pas un nombre
 				}
 			}
-			// Convertir en booléen si le champ est de type boolean
-			else if (fieldType === "ZodBoolean") {
-				transformedData[key] = value === "checked"; // Conversion de "checked" en booléen
-			} else {
-				transformedData[key] = value; // Laisser la valeur inchangée si ce n'est pas un type attendu
-			}
 		} else {
 			transformedData[key] = value; // Laisser les autres types inchangés
 		}
@@ -63,6 +57,7 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 			handleSubmit,
 			formState: { errors },
 		} = useForm({
+			mode: "onBlur",
 			defaultValues: isZodObject(schema)
 				? Object.keys(schema.shape).reduce((acc, key) => {
 						acc[key] = "";
@@ -82,7 +77,7 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 					onSubmit(result.data);
 				}
 			} else {
-				console.error(result.error);
+				return;
 			}
 		};
 
@@ -115,9 +110,16 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 								];
 						}
 
-						const message = errors[key]?.message;
+						// Extraire le message d'erreur
+						const errorMessage = errors[key]?.message;
+						const message =
+							typeof errorMessage === "string"
+								? errorMessage
+								: errorMessage?.message;
+
 						let options: ZodafSelectOption[] = [];
 						let Comp: ZodafInputElement | ZodafSelectElement;
+
 						if (
 							(schema.shape[key]._def
 								.typeName as z.ZodFirstPartyTypeKind) ===
@@ -151,6 +153,7 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 							}
 							Comp = zodafConfig.inputMapping?.[fieldType];
 						}
+
 						return (
 							<Comp
 								key={key}
@@ -164,17 +167,14 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 								disabled={fieldsConfig[key]?.disabled}
 								placeholder={fieldsConfig[key]?.placeholder}
 								icon={fieldsConfig[key]?.icon}
-								error={
-									typeof message === "object"
-										? message?.message?.toString()
-										: message
-								}
+								error={message} // Passer le message d'erreur comme chaîne de caractères
 								register={register}
 								name={key}
 								{...fieldsConfig[key]?.props}
 							/>
 						);
 					})}
+
 				{Submit && !submitHidden && <Submit>{submitLabel}</Submit>}
 			</form>
 		);
