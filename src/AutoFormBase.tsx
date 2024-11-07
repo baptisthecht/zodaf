@@ -101,6 +101,7 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 				{...props}>
 				{isZodObject(schema) &&
 					Object.keys(schema.shape).map((key) => {
+						let optionnal = false;
 						let fieldType = "";
 						if (fieldsConfig[key] && fieldsConfig[key].fieldType) {
 							fieldType = fieldsConfig[key].fieldType;
@@ -109,6 +110,7 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 								schema.shape[key]._def.typeName ===
 								"ZodOptional"
 							) {
+								optionnal = true;
 								fieldType =
 									DEFAULT_MAPPING[
 										schema.shape[key]._def.innerType._def
@@ -161,7 +163,7 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 						} else {
 							if (!zodafConfig.inputMapping?.[fieldType]) {
 								throw new Error(
-									`No component found for input fieldType: ${fieldType}. Please check your zodaf.config.ts file. ${fieldType}`
+									`No component found for input fieldType: ${fieldType}. Please check your zodaf.config.ts file. ${schema.shape[key]._def.typeName}`
 								);
 							}
 							Comp = zodafConfig.inputMapping?.[fieldType];
@@ -183,6 +185,7 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 								error={message} // Passer le message d'erreur comme chaîne de caractères
 								register={register}
 								name={key}
+								optional={optionnal}
 								{...fieldsConfig[key]?.props}
 							/>
 						);
