@@ -185,7 +185,7 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 								error={message} // Passer le message d'erreur comme chaîne de caractères
 								register={register}
 								name={key}
-								optional={optionnal}
+								required={!optionnal}
 								{...fieldsConfig[key]?.props}
 							/>
 						);

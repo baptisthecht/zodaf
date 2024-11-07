@@ -24,7 +24,7 @@ type ZodafElementBaseProps = {
 	disabled?: boolean;
 	placeholder?: string;
 	icon?: LucideIcon;
-	optional?: boolean;
+	required?: boolean;
 };
 
 export type ZodafInputElementProps = ZodafElementBaseProps;
