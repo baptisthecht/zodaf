@@ -19,6 +19,7 @@ export type ZodafELementProps = {
 	description?: string;
 	disabled?: boolean;
 	placeholder?: string;
+	icon?: LucideIcon;
 };
 export type ZodafElement = FC<ZodafELementProps>;
 
