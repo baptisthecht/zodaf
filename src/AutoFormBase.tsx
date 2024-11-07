@@ -10,9 +10,42 @@ import {
 	ZodafSelectOption,
 } from ".";
 
-function isZodObject(schema: ZodSchema<any>): schema is ZodObject<any> {
+function isZodObject(schema: ZodSchema): schema is ZodObject<any> {
 	return schema instanceof z.ZodObject;
 }
+
+// Fonction pour transformer les champs en booleans ou nombres automatiquement
+const transformData = (data: Record<string, any>, schema: any) => {
+	const transformedData: Record<string, any> = {};
+
+	Object.keys(data).forEach((key) => {
+		let value = data[key];
+
+		// Si le champ est un nombre ou un booléen dans le schema
+		const fieldType = schema.shape[key]?._def.typeName;
+
+		if (typeof value === "string") {
+			// Convertir en nombre si le champ est de type number
+			if (fieldType === "ZodNumber" && typeof value === "string") {
+				if (!isNaN(Number(value))) {
+					transformedData[key] = Number(value); // Conversion en nombre
+				} else {
+					transformedData[key] = value; // Laisser la valeur inchangée si ce n'est pas un nombre
+				}
+			}
+			// Convertir en booléen si le champ est de type boolean
+			else if (fieldType === "ZodBoolean") {
+				transformedData[key] = value === "true"; // Conversion de "true"/"false" en booléen
+			} else {
+				transformedData[key] = value; // Laisser la valeur inchangée si ce n'est pas un type attendu
+			}
+		} else {
+			transformedData[key] = value; // Laisser les autres types inchangés
+		}
+	});
+
+	return transformedData;
+};
 
 const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 	({ form, zodafConfig, className, ...props }, ref) => {
@@ -37,8 +70,12 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 				: {},
 		});
 
+		// OnSubmit Form avec transformation des données
 		const onSubmitForm = (data: z.infer<typeof schema>) => {
-			const result = schema.safeParse(data);
+			// Transformer les données avant de les passer au schema
+			const transformedData = transformData(data, schema);
+
+			const result = schema.safeParse(transformedData); // Valider avec le schéma
 			if (result.success) {
 				if (onSubmit) {
 					onSubmit(result.data);
