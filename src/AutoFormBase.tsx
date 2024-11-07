@@ -35,7 +35,7 @@ const transformData = (data: Record<string, any>, schema: any) => {
 			}
 			// Convertir en booléen si le champ est de type boolean
 			else if (fieldType === "ZodBoolean") {
-				transformedData[key] = value === "true"; // Conversion de "true"/"false" en booléen
+				transformedData[key] = value === "checked"; // Conversion de "checked" en booléen
 			} else {
 				transformedData[key] = value; // Laisser la valeur inchangée si ce n'est pas un type attendu
 			}
