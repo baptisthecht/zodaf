@@ -75,8 +75,8 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 	({ form, zodafConfig, className, ...props }, ref) => {
 		const { schema: unTransformedSchema, config } = form;
 		const schema = cloneSchemaWithNumberTransform(unTransformedSchema);
-		console.log(unTransformedSchema);
-		console.log(schema);
+		console.log(unTransformedSchema.shape);
+		console.log(schema.shape);
 		const {
 			fieldsConfig = {},
 			onSubmit,
