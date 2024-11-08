@@ -54,6 +54,7 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 			submitLabel = "Submit",
 			showOptional,
 			showRequired,
+			showDescriptionOnError,
 			submitType,
 		} = config;
 		const {
@@ -188,6 +189,10 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 								formConfig={{
 									showOptional,
 									showRequired,
+									showDescriptionOnError:
+										showDescriptionOnError !== undefined
+											? showDescriptionOnError
+											: true,
 								}}
 								fieldConfig={fieldsConfig[key] || {}}
 								{...fieldsConfig[key]?.props}
