@@ -1,6 +1,6 @@
 {
 	"name": "@zodaf/react",
-	"version": "1.0.112",
+	"version": "1.0.113",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"type": "module",
