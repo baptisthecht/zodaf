@@ -19,6 +19,7 @@ export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 type GivenFormConfig = {
 	showOptional?: boolean;
 	showRequired?: boolean;
+	showDescriptionOnError?: boolean;
 };
 
 type ZodafElementBaseProps = {
@@ -86,6 +87,7 @@ type AutoFormConfig<T> = T extends z.ZodObject<infer Shape>
 			submitType?: string;
 			showOptional?: boolean;
 			showRequired?: boolean;
+			showDescriptionOnError?: boolean;
 	  }
 	: never;
 
