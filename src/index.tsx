@@ -87,7 +87,7 @@ type AutoFormConfig<T> = T extends z.ZodObject<infer Shape>
 			submitType?: string;
 			showOptional?: boolean;
 			showRequired?: boolean;
-			showDescriptionOnError?: boolean;
+			showDescriptionOnError: boolean;
 	  }
 	: never;
 
