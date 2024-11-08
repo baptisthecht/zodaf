@@ -189,7 +189,7 @@ const AutoFormBase = forwardRef<HTMLFormElement, AutoFormBaseProps<any>>(
 									showOptional,
 									showRequired,
 								}}
-								fieldConfig={fieldsConfig[key]}
+								fieldConfig={fieldsConfig[key] || {}}
 								{...fieldsConfig[key]?.props}
 							/>
 						);

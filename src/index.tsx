@@ -27,8 +27,8 @@ type ZodafElementBaseProps = {
 	register: UseFormRegister<any>;
 	error?: any;
 	required?: boolean;
-	formConfig?: GivenFormConfig;
-	fieldConfig?: ZodafFieldConfig;
+	formConfig: GivenFormConfig;
+	fieldConfig: ZodafFieldConfig;
 };
 
 export type ZodafInputElementProps = ZodafElementBaseProps;
